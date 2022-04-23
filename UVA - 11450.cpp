@@ -14,7 +14,7 @@ bool DB = 0;
 int n = 0;
 const int N = 1e4 + 4;
 int arr[21][21];
-int mem[21][201];
+int mem[2][201];
 int M, G;
 int Solve(int money, int g){
     if(money < 0)
@@ -53,20 +53,28 @@ int main(){
         for(int g = 1 ; g <= arr[0][0] ; ++g)
             if(M - arr[0][g] >= 0)
                 mem[0][M - arr[0][g]] = 1;
+        int p = 0;
         for(int g = 1 ; g < G ; ++g){
+            p = !p;
+            for(int i = 0 ; i < 201 ; ++i){
+                mem[p][i] = 0;
+            }
             for(int elm = 1 ; elm <= arr[g][0] ; ++elm){
                 for(int money = 0 ; money < 201 ; ++money){
-                    if(mem[g - 1][money]){
+
+                    if(mem[!p][money]){
+                        // if(g==G-1)cout << g << " " << money << endl;
                         if(money - arr[g][elm] >= 0){
-                            mem[g][money - arr[g][elm]] = 1;
+                            mem[p][money - arr[g][elm]] = 1;
                         }
                     }
                 }
             }
+            // if(g==g-1)break;
         }
         int ans = -1;
         for(int i = 0 ; i < 201 ; ++i){
-            if(mem[G - 1][i]){
+            if(mem[p][i]){
                 ans = i;
                 break;
             }
